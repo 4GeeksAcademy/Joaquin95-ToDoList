@@ -25,8 +25,43 @@ const Home = () => {
 	};
 	
 	return (
-		<div className="text-center">
+		<div className="container mt-5">
+			<h1 className="text-Center">Task List</h1>
 			
+			<div className="input-Group mb-3">
+				<input 
+				type="text"
+				className="form-Control"
+				placeHolder="Add a new task"
+				value="{taskInput}"
+				onChange="{(e) => setTaskInput(e.target.vaule)}
+				onKeyPress={handleKeyPress}"/>
+
+				<button className="btn btn-primary" onClick={addTask}>Add Task</button>
+			</div>
+
+			<ul className="list-Group">
+				{tasks.length === 0 ? ( 
+					<li  
+					className="list-Group-Item text-center">
+					No tasks, add a task </li>
+				) : (
+					tasks.map((task, index) => (
+					<li 
+					key={index}
+					className="list-group-item d-flex justify-content-between align-items-center">
+						{task}
+
+					<i 
+					className="fas fa-trash-alt text-danger"
+					onClick={() => deleteTask(index)}
+					style={{ cursor: "pointer"}}>
+
+					</i>
+					</li>
+				))
+				)}
+			</ul>
 		</div>
 	);
 };
