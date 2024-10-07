@@ -1,69 +1,55 @@
 import React, { useState } from "react";
 
-
 //create your first component
 const Home = () => {
-	const [tasks, setTasks] = useState ([]);
-	const [taskInput, setTaskInput] = useState ("");
+  const [todos, setTodos] = useState([
+    "Make the bed",
+    "Wash the cars",
+    "Start coding",
+    "Take my dog to get a grooming",
+  ]);
+  const [newTodo, setNewTodo] = useState("");
 
-	const addTask = () => {
-		if (taskInput.trim () !== "") {
-			setTasks([...tasks, taskInput]);
-			setTaskInput("");
-		}
-	};
+  const addTodo = (e) => {
+    e.preventDefault();
+    if (newTodo.trim() !== "") {
+      setTodos([...todos, newTodo]);
+      setNewTodo("");
+    }
+  };
 
-	const handleKeyPress = (e) => {
-		if (e.key === "Enter") {
-			addTask();
-		}
-	};
+  const removeTodo = (index) => {
+    const updatedTodos = todos.filter((todo, i) => i !== index);
+    setTodos(updatedTodos);
+  };
 
-	const deleteTask = (index) => {
-		const updatedTasks = tasks.filter((_,i) => i !== index);
-		setTasks(updatedTasks);
-	};
-	
-	return (
-		<div className="container mt-5">
-			<h1 className="text-Center">Task List</h1>
-			
-			<div className="input-Group mb-3">
-				<input 
-				type="text"
-				className="form-Control"
-				placeHolder="Add a new task"
-				value="{taskInput}"
-				onChange="{(e) => setTaskInput(e.target.vaule)}
-				onKeyPress={handleKeyPress}"/>
+  return (
+    <div className="todo-container">
+      <h1 className="todo-title">todos</h1>
+      <form onSubmit={addTodo}>
+        <input
+          type="text"
+          placeholder="What needs to be done?"
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+          className="todo-input"
+        />
+      </form>
 
-				<button className="btn btn-primary" onClick={addTask}>Add Task</button>
-			</div>
-
-			<ul className="list-Group">
-				{tasks.length === 0 ? ( 
-					<li  
-					className="list-Group-Item text-center">
-					No tasks, add a task </li>
-				) : (
-					tasks.map((task, index) => (
-					<li 
-					key={index}
-					className="list-group-item d-flex justify-content-between align-items-center">
-						{task}
-
-					<i 
-					className="fas fa-trash-alt text-danger"
-					onClick={() => deleteTask(index)}
-					style={{ cursor: "pointer"}}>
-
-					</i>
-					</li>
-				))
-				)}
-			</ul>
-		</div>
-	);
+      <ul className="todo-list">
+        {todos.map((todo, index) => (
+          <li key={index} className="todo-item">
+            {todo}
+            <button onClick={() => removeTodo(index)} className="delete-button">
+              ✖
+            </button>
+          </li>
+        ))}
+      </ul>
+      <div className="todo-footer">
+        {todos.length} item{todos.length !== 1 ? "s" : ""} left
+      </div>
+    </div>
+  );
 };
-
 export default Home;
